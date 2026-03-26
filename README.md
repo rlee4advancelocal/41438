@@ -8,8 +8,17 @@ When `copier update` adds a new executable file (mode `100755` in the template),
 Renovate commits it as `100644` (not executable).
 
 Evidence: [PR #1](https://github.com/rlee4advancelocal/41438/pull/1) — `bin/deploy.sh`
-is `new file mode 100644` in the diff. The git tree confirms:
+is committed as `100644`. Note: GitHub's PR web UI does not display file mode
+changes. To verify, use the API:
 
+```bash
+# Get the PR head commit tree
+gh api repos/rlee4advancelocal/41438/pulls/1 --jq '.head.sha' \
+  | xargs -I{} gh api "repos/rlee4advancelocal/41438/git/trees/{}?recursive=1" \
+    --jq '.tree[] | select(.path | startswith("bin/")) | "\(.mode) \(.path)"'
+```
+
+Output:
 ```
 100644 bin/deploy.sh   <-- should be 100755
 ```
