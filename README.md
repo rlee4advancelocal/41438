@@ -14,12 +14,12 @@ The template has two tags:
 You can verify the file mode in the template:
 
 ```bash
-gh api repos/rlee4advancelocal/41438-template/git/trees/v1.1.0?recursive=1 \
-  --jq '.tree[] | select(.path == "bin/deploy.sh") | "\(.mode) \(.type) \(.sha | .[0:7])  \(.path)"'
+git clone https://github.com/rlee4advancelocal/41438-template.git
+git -C 41438-template ls-tree v1.1.0 bin/deploy.sh
 ```
 
 ```
-100755 blob 87db2b1  bin/deploy.sh
+100755 blob 87db2b16266fc0ff4c9e95f89c73ebc093f5ab03	bin/deploy.sh
 ```
 
 ## Current behavior
