@@ -2,6 +2,8 @@
 
 Reproduction for [Renovate Discussion 41438](https://github.com/renovatebot/renovate/discussions/41438).
 
+This reproduction was created with AI assistance. All commands and results were human-verified.
+
 ## Setup
 
 This repo was created with [copier](https://copier.readthedocs.io/) from [rlee4advancelocal/41438-template](https://github.com/rlee4advancelocal/41438-template) at `v1.0.0`.
@@ -63,7 +65,3 @@ index 0000000..87db2b1
 ## Link to the Renovate issue or Discussion
 
 https://github.com/renovatebot/renovate/discussions/41438
-
----
-
-This reproduction was created with AI assistance.
