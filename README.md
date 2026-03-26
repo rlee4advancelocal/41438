@@ -14,7 +14,8 @@ The template has two tags:
 You can verify the file mode in the template:
 
 ```bash
-git ls-tree v1.1.0 bin/deploy.sh --repo rlee4advancelocal/41438-template
+gh api repos/rlee4advancelocal/41438-template/git/trees/v1.1.0?recursive=1 \
+  --jq '.tree[] | select(.path == "bin/deploy.sh") | "\(.mode) \(.type) \(.sha | .[0:7])  \(.path)"'
 ```
 
 ```
