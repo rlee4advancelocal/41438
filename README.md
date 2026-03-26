@@ -63,3 +63,7 @@ index 0000000..87db2b1
 ## Link to the Renovate issue or Discussion
 
 https://github.com/renovatebot/renovate/discussions/41438
+
+---
+
+This reproduction was created with AI assistance.
