@@ -2,30 +2,62 @@
 
 Reproduction for [Renovate Discussion 41438](https://github.com/renovatebot/renovate/discussions/41438).
 
-## Current behavior
+## Setup
 
-When `copier update` adds a new executable file (mode `100755` in the template),
-Renovate commits it as `100644` (not executable).
+This repo was created with [copier](https://copier.readthedocs.io/) from [rlee4advancelocal/41438-template](https://github.com/rlee4advancelocal/41438-template) at `v1.0.0`.
 
-Evidence: [PR #1](https://github.com/rlee4advancelocal/41438/pull/1) — `bin/deploy.sh`
-is committed as `100644`. Note: GitHub's PR web UI does not display file mode
-changes. To verify:
+The template has two tags:
+
+- **`v1.0.0`**: A minimal copier template (`copier.yml` + `.copier-answers.yml.jinja`, no other files)
+- **`v1.1.0`**: Adds `bin/deploy.sh` — a shell script committed as **executable** (`100755`) in the template
+
+You can verify the file mode in the template:
 
 ```bash
-gh pr diff 1 --repo rlee4advancelocal/41438 | grep -A2 "deploy.sh"
+git ls-tree v1.1.0 bin/deploy.sh --repo rlee4advancelocal/41438-template
 ```
 
-Output:
 ```
+100755 blob 87db2b1  bin/deploy.sh
+```
+
+## Current behavior
+
+When Renovate runs `copier update` to upgrade from `v1.0.0` → `v1.1.0`, the new file `bin/deploy.sh` is committed with mode `100644` (not executable).
+
+See [PR #1](https://github.com/rlee4advancelocal/41438/pull/1). GitHub's PR web UI does not show file mode changes, so use the CLI to verify:
+
+```bash
+gh pr diff 1 --repo rlee4advancelocal/41438
+```
+
+```diff
 diff --git a/bin/deploy.sh b/bin/deploy.sh
-new file mode 100644        <-- should be 100755
+new file mode 100644
 index 0000000..87db2b1
+--- /dev/null
++++ b/bin/deploy.sh
+@@ -0,0 +1,2 @@
++#!/usr/bin/env bash
++echo "Deploying project..."
 ```
+
+The file is `100644` — the executable bit was dropped.
 
 ## Expected behavior
 
-New files added by `copier update` should preserve the executable bit from the
-filesystem. `bin/deploy.sh` should be committed as `100755`.
+`bin/deploy.sh` should be committed as `100755`, preserving the executable permission from the template:
+
+```diff
+diff --git a/bin/deploy.sh b/bin/deploy.sh
+new file mode 100755
+index 0000000..87db2b1
+--- /dev/null
++++ b/bin/deploy.sh
+@@ -0,0 +1,2 @@
++#!/usr/bin/env bash
++echo "Deploying project..."
+```
 
 ## Link to the Renovate issue or Discussion
 
